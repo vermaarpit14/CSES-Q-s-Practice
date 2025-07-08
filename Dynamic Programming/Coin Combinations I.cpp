@@ -43,17 +43,13 @@ int32_t main()
     cin >> n >> x;
     vector<int> c(n), dp(x + 1, 0);
     rep(i, 0, n) cin >> c[i];
-    sort(all(c));
     dp[0] = 1;
     for (int i = 1; i <= x; i++)
     {
-        for (int j = 0; j < n; j++)
-        {
-            if (i - c[j] >= 0)
-            {
-                dp[i] = ((dp[i])%MOD + (dp[i-c[j]]%MOD))%MOD;
-            } else {
-                break;
+        for (int coin : c) {
+            if (coin <= i) {
+                dp[i] += dp[i - coin];
+                if (dp[i] >= MOD) dp[i] -= MOD;
             }
         }
     }
