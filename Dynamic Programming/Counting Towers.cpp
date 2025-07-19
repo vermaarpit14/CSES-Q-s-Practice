@@ -32,20 +32,25 @@ vector<bool> sieve(int n) {
 /************************************************************************************/
 
 int32_t main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    //code here
-    int n, x;
-    cin>>n>>x;
-    vector<int> c(n), p(n);
-    rep(i, 0, n) cin>>c[i];
-    rep(i, 0, n) cin>>p[i];
-    vector<int> dp(x+1, 0);
-    for(int i=0 ; i<n ; i++){
-        for(int j=x ; j>=c[i] ; j--){
-            dp[j] = max(dp[j], p[i]+dp[j-c[i]]);
-        }
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    int t, mx=0;
+    cin>>t;
+    vector<int> n(t);
+    for(int i=0 ; i<t ; i++){
+        cin>>n[i];
+        mx = max(mx, n[i]);
     }
-    cout<<dp[x]<<"\n";
+    vector<vector<int>> dp(mx+1, vector<int>(2, 0));
+    dp[1][0] = 1;
+    dp[1][1] = 1;
+    for(int i=2 ; i<=mx ; i++){
+        dp[i][0] = (4*dp[i-1][0] + dp[i-1][1])%MOD;
+        dp[i][1] = (2*dp[i-1][1] + dp[i-1][0])%MOD;
+    }
+    for(int i=0 ; i<t ; i++){
+        int ans = (dp[n[i]][0]+dp[n[i]][1])%MOD;
+        cout<<ans<<"\n";
+    }
     return 0;
 }

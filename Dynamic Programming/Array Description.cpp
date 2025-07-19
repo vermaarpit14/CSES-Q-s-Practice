@@ -35,17 +35,30 @@ int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     //code here
-    int n, x;
-    cin>>n>>x;
-    vector<int> c(n), p(n);
-    rep(i, 0, n) cin>>c[i];
-    rep(i, 0, n) cin>>p[i];
-    vector<int> dp(x+1, 0);
-    for(int i=0 ; i<n ; i++){
-        for(int j=x ; j>=c[i] ; j--){
-            dp[j] = max(dp[j], p[i]+dp[j-c[i]]);
+    int n, m;
+    cin>>n>>m;
+    vector<int> a(n);
+    rep(i, 0, n) cin>>a[i];
+    vector<vector<int>> dp(n, vector<int>(m+1, 0));
+    for(int i=1 ; i<=m ; i++){
+        if(a[0]==0 || a[0]==i)
+        dp[0][i] = 1;
+    }
+    for(int i=1 ; i<n ; i++){
+        for(int j=1 ; j<=m ; j++){
+            if(a[i]!=0 && a[i]!=j)
+            continue;
+            int ans = 0;
+            ans += dp[i-1][j]%MOD;
+            if(j>1) ans += dp[i-1][j-1]%MOD;
+            if(j<m) ans += dp[i-1][j+1]%MOD;
+            dp[i][j] = ans%MOD;
         }
     }
-    cout<<dp[x]<<"\n";
+    int ans = 0;
+    for(int i=1 ; i<=m ; i++){
+        ans = (ans + dp[n-1][i])%MOD;
+    }
+    cout<<ans<<"\n";
     return 0;
 }

@@ -35,17 +35,30 @@ int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     //code here
-    int n, x;
-    cin>>n>>x;
-    vector<int> c(n), p(n);
-    rep(i, 0, n) cin>>c[i];
-    rep(i, 0, n) cin>>p[i];
-    vector<int> dp(x+1, 0);
-    for(int i=0 ; i<n ; i++){
-        for(int j=x ; j>=c[i] ; j--){
-            dp[j] = max(dp[j], p[i]+dp[j-c[i]]);
+    int n;
+    cin>>n;
+    vector<vector<int>> board(n, vector<int>(n, -1));
+    board[0][0] = 0;
+    queue<pair<int, int>> q;
+    q.push({0, 0});
+    int dx[] = {-2, -2, -1, -1, 1, 1, 2, 2};
+    int dy[] = {-1, 1, -2, 2, -2, 2, -1, 1};
+    while(!q.empty()){
+        int x = q.front().first, y = q.front().second;
+        q.pop();
+        for(int i=0 ; i<8 ; i++){
+            int nx = x+dx[i], ny = y+dy[i];
+            if(nx<n && nx>=0 && ny<n && ny>=0 && board[nx][ny]==-1){
+                board[nx][ny] = board[x][y]+1;
+                q.push({nx, ny});
+            }
         }
     }
-    cout<<dp[x]<<"\n";
+    rep(i, 0, n){
+        rep(j, 0, n){
+            cout<<board[i][j]<<" ";
+        }
+        cout<<"\n";
+    }
     return 0;
 }

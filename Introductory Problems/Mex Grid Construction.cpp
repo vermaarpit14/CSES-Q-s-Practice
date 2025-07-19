@@ -30,22 +30,35 @@ vector<bool> sieve(int n) {
     return isPrime;
 }
 /************************************************************************************/
+vector<vector<int>> grid(100, vector<int>(100, 0));
+vector<int> pow_2 = {0, 1, 2, 4, 8, 16, 32, 64, 128};
+
+void f(int r, int c){
+    int i=0, j=0;
+    while(pow_2[i] <= r) i += 1;
+    while(pow_2[j] <= c) j += 1;
+    i -= 1;
+    j -= 1;
+    if(pow_2[i] == pow_2[j]){
+        grid[r][c] = grid[r - pow_2[i]][c - pow_2[j]];
+    } else if(pow_2[i] > pow_2[j]){
+        grid[r][c] = grid[r - pow_2[i]][c] + pow_2[i];
+    } else {
+        grid[r][c] = grid[r][c - pow_2[j]] + pow_2[j];
+    }
+}
 
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     //code here
-    int n, x;
-    cin>>n>>x;
-    vector<int> c(n), p(n);
-    rep(i, 0, n) cin>>c[i];
-    rep(i, 0, n) cin>>p[i];
-    vector<int> dp(x+1, 0);
+    int n; cin>>n;
     for(int i=0 ; i<n ; i++){
-        for(int j=x ; j>=c[i] ; j--){
-            dp[j] = max(dp[j], p[i]+dp[j-c[i]]);
+        for(int j=0 ; j<n ; j++){
+            f(i, j);
+            cout<<grid[i][j]<<" ";
         }
+        cout<<"\n";
     }
-    cout<<dp[x]<<"\n";
     return 0;
 }

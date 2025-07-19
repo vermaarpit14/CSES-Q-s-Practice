@@ -30,22 +30,46 @@ vector<bool> sieve(int n) {
     return isPrime;
 }
 /************************************************************************************/
+vector<int> power(19, 1);
 
-int32_t main() {
+void precompute_powers()
+{
+    for (int i = 1; i < 19; i++)
+    {
+        power[i] = power[i - 1] * 10;
+    }
+}
+
+int32_t main()
+{
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    //code here
-    int n, x;
-    cin>>n>>x;
-    vector<int> c(n), p(n);
-    rep(i, 0, n) cin>>c[i];
-    rep(i, 0, n) cin>>p[i];
-    vector<int> dp(x+1, 0);
-    for(int i=0 ; i<n ; i++){
-        for(int j=x ; j>=c[i] ; j--){
-            dp[j] = max(dp[j], p[i]+dp[j-c[i]]);
+
+    precompute_powers();
+
+    int q;
+    cin >> q;
+    while (q--)
+    {
+        int k;
+        cin >> k;
+
+        int digit_length = 1; 
+        int count = 9;     
+        int start = 1;      
+
+        while (k > digit_length * count)
+        {
+            k -= digit_length * count;
+            digit_length++;
+            count *= 10;
+            start *= 10;
         }
+
+        int number = start + (k - 1) / digit_length;
+        int digit_pos = (k - 1) % digit_length;
+        string num_str = to_string(number);
+        cout << num_str[digit_pos] << "\n";
     }
-    cout<<dp[x]<<"\n";
     return 0;
 }

@@ -35,17 +35,30 @@ int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     //code here
-    int n, x;
-    cin>>n>>x;
-    vector<int> c(n), p(n);
-    rep(i, 0, n) cin>>c[i];
-    rep(i, 0, n) cin>>p[i];
-    vector<int> dp(x+1, 0);
-    for(int i=0 ; i<n ; i++){
-        for(int j=x ; j>=c[i] ; j--){
-            dp[j] = max(dp[j], p[i]+dp[j-c[i]]);
+    int t;
+    cin>>t;
+    while(t--){
+        int n, a, b;
+        cin >> n >> a >> b;
+        if (n < a + b)
+            cout << "NO" << "\n";
+        else if ((a + b) > 0 && (a == 0 || b == 0))
+            cout << "NO" << "\n";
+        else
+        {
+            cout << "YES" << "\n";
+            int d = (a + b);
+            for (int i = b + 1; i <= d; i++)
+                cout << i << " ";
+            for (int i = 1; i <= b; i++)
+                cout << i << " ";
+            for (int i = d + 1; i <= n; i++)
+                cout << i << " ";
+            cout << "\n";
+            for (int i = 1; i <= n; i++)
+                cout << i << " ";
+            cout << "\n";
         }
     }
-    cout<<dp[x]<<"\n";
     return 0;
 }

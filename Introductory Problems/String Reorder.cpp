@@ -31,21 +31,53 @@ vector<bool> sieve(int n) {
 }
 /************************************************************************************/
 
+bool poss(vector<int> &freq, int i, int j, int n){
+    int rem = n-1-i;
+    freq[j]--;
+    int mx = -1;
+    for(int i=0 ; i<26 ; i++){
+        mx = max(mx, freq[i]);
+    }
+    freq[j]++;
+    if(mx <= (rem+1)/2)
+    return true;
+    return false;
+}
+
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     //code here
-    int n, x;
-    cin>>n>>x;
-    vector<int> c(n), p(n);
-    rep(i, 0, n) cin>>c[i];
-    rep(i, 0, n) cin>>p[i];
-    vector<int> dp(x+1, 0);
+    string s, ans="";
+    cin>>s;
+    int n = s.length();
+    vector<int> freq(26, 0);
+    int mx = -1;
     for(int i=0 ; i<n ; i++){
-        for(int j=x ; j>=c[i] ; j--){
-            dp[j] = max(dp[j], p[i]+dp[j-c[i]]);
-        }
+        freq[s[i]-'A']++;
+        mx = max(mx, freq[s[i]-'A']);
     }
-    cout<<dp[x]<<"\n";
+    if(mx > (n+1)/2){
+        cout<<-1<<"\n";
+    } else {
+        char last = '0';
+        for (int i = 0; i < n; i++){
+            bool f = false;
+            for (int j = 0; j < 26; j++){
+                if (last != (char)(j+65) && freq[j] > 0 && poss(freq, i, j, n)){
+                    freq[j]--;
+                    f = true;
+                    ans += (char)(j+65);
+                    last = (char)(j+65);
+                    break;
+                }
+            }
+            if (!f){
+                ans = "-1";
+                break;
+            }
+        }
+        cout << ans << "\n";
+    }
     return 0;
 }
