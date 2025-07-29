@@ -35,38 +35,20 @@ int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     //code here
-    int n, m, k, ans=0;
-    cin>>n>>m>>k;
+    int n, x, ans = 0;
+    cin>>n>>x;
     vector<int> a(n);
-    vector<pair<int, int>> b(m);
     rep(i, 0, n) cin>>a[i];
-    rep(i, 0, m){
-        cin>>b[i].first;
-        b[i].second = 0;
-    }
     sort(all(a));
-    sort(all(b));
-    for(int i=0 ; i<n ; i++){
-        int x = a[i]-k, y = a[i]+k;
-        int low=0, high=m-1, curr = -1;
-        while(low <= high){
-            int mid = low + (high-low)/2;
-            if(b[mid].first < x){
-                low = mid+1;
-            } else if (b[mid].first > y){
-                high = mid-1;
-            } else{
-                if(b[mid].second == 0){
-                    curr = mid;
-                    high = mid-1;
-                } else {
-                    low = mid+1;
-                }
-            }
-        }
-        if(curr != -1){
-            b[curr].second = 1;
+    int left=0, right=n-1;
+    while(left <= right){
+        if(a[left]+a[right] > x){
             ans += 1;
+            right -= 1;
+        } else {
+            ans += 1;
+            left += 1;
+            right -= 1;
         }
     }
     cout<<ans<<"\n";

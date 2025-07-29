@@ -34,41 +34,25 @@ vector<bool> sieve(int n) {
 int32_t main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    //code here
-    int n, m, k, ans=0;
-    cin>>n>>m>>k;
-    vector<int> a(n);
-    vector<pair<int, int>> b(m);
-    rep(i, 0, n) cin>>a[i];
-    rep(i, 0, m){
-        cin>>b[i].first;
-        b[i].second = 0;
+    int n, m;
+    cin >> n >> m;
+    multiset<int> tickets;
+    for (int i = 0; i < n; ++i){
+        int h;
+        cin >> h;
+        tickets.insert(h);
     }
-    sort(all(a));
-    sort(all(b));
-    for(int i=0 ; i<n ; i++){
-        int x = a[i]-k, y = a[i]+k;
-        int low=0, high=m-1, curr = -1;
-        while(low <= high){
-            int mid = low + (high-low)/2;
-            if(b[mid].first < x){
-                low = mid+1;
-            } else if (b[mid].first > y){
-                high = mid-1;
-            } else{
-                if(b[mid].second == 0){
-                    curr = mid;
-                    high = mid-1;
-                } else {
-                    low = mid+1;
-                }
-            }
-        }
-        if(curr != -1){
-            b[curr].second = 1;
-            ans += 1;
+    for (int i = 0; i < m; ++i){
+        int t;
+        cin >> t;
+        auto it = tickets.upper_bound(t);
+        if (it == tickets.begin())
+            cout << -1 << "\n";
+        else {
+            --it;
+            cout << *it << "\n";
+            tickets.erase(it);
         }
     }
-    cout<<ans<<"\n";
     return 0;
 }
